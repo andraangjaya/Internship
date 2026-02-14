@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Middleware;
+namespace App\Http\Middleware;
 
-use Illuminate\Routing\Controllers\Middleware;
-
-class AdminChecker extends Middleware
+class AdminChecker
 {
     public function handle($request, \Closure $next)
     {
-        if($request->admin == 'admin'){
-            return redirect()->route('dashboard.admin');
+        if($request->role !== 'admin'){
+            return redirect()->route('dashboard.user');
         }
         return $next($request);
     }

@@ -5,21 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-class HomeController extends Controller
+class StudentController extends Controller
 {
-    public function index(Request $request)
+    public function inputStudents(Request $request)
     {
-        $name = $request->query('name');
-        $style = $request->query('style', 'default');
+        $request->validate([
+            'studentName' => 'required|min:3'
+        ]);
 
-        $styleType = match ($style) {
-            'formal' => "Welcome " . $name,
-            'informal' => "Hello " . $name . " Ganteng",
-            'nothing' => "Hello " . $name,
-            'default' => ""
-        };
+        $students = session('students', []);
+        $students[] = $request->studentName;
+        session(['students' => $students]);
 
-        return view('welcome', compact('styleType'));
+        return redirect('students') -> with('success', 'student added');
+    }
+
+    public function getStudents(Request $request)
+    {
+        $show = $request->query('show', false);
+        $students = $show ? session('students', []) : [];
+        return view('student', compact('students', 'show'));
     }
 }
 

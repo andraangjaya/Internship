@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
 
-class AgeChecker extends Middleware
+class AgeChecker
 {
     public function handle(Request $request, Closure $next)
     {
         if($request->age < 18){
             return redirect('home');
         }
-        return next($request);
+        return $next($request);
     }
 }

@@ -5,15 +5,34 @@
 </head>
 <body>
 
-<form action="{{ url('/name') }}" method="get">
-    Name: <input type="text" name="name">
-    Style: <input type="text" name="style">
+<form action="{{ url('/students') }}" method="post">
+    @csrf
+    Name: <input type="text" name="studentName">
     <input type="submit">
 </form>
 
-@if($styleType)
-    <h2>{{ $styleType }}</h2>
+@if(session('success'))
+    <p>{{ session('success') }}</p>
 @endif
+
+
+<form method="get" action="/students">
+    <input type="hidden" name="show" value="1">
+    <button type="submit">Show all students</button>
+    @if($show)
+        <ul>
+            @foreach($students as $student)
+                <li>{{ $student }}</li>
+            @endforeach
+        </ul>
+    @elseif($show)
+        <p>No Students Added</p>
+    @endif
+</form>
+
+
+
+
 
 </body>
 </html>
